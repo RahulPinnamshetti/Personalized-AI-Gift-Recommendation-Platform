@@ -5,7 +5,12 @@ const { getGiftRecommendations } = require("./ai");
 const catalog = require("./catalog.json");
 
 const app = express();
-app.use(cors());
+
+// Allow CORS from specific frontend URL (adjust as needed)
+app.use(cors({
+  origin: 'http://personalized-ai-gift-recommendation-platform.vercel.app/',  // Replace with your actual frontend URL
+}));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
