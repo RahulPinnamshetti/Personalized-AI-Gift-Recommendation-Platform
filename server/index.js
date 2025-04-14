@@ -6,10 +6,19 @@ const catalog = require("./catalog.json");
 
 const app = express();
 
-// Allow CORS from specific frontend URL (adjust as needed)
-app.use(cors({
-  origin: 'http://personalized-ai-gift-recommendation-platform.vercel.app/',  // Replace with your actual frontend URL
-}));
+// ✅ Replace with your actual deployed frontend URL (no trailing slash)
+const allowedOrigins = ["https://personalized-ai-gift-recommendation-platform.vercel.app"];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true,
+  })
+);
+
+// ✅ Handle preflight requests
+app.options("*", cors());
 
 app.use(express.json());
 
@@ -22,7 +31,7 @@ const getKeywords = (text) =>
     .split(" ")
     .filter((word) => word.length > 3);
 
-// ✅ FIXED: Root route to avoid "Cannot GET /"
+// ✅ Root route for test
 app.get("/", (req, res) => {
   res.send("Gift Recommendation API is running 🚀");
 });
@@ -66,6 +75,7 @@ app.post("/api/recommendations", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
